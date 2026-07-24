@@ -1,11 +1,16 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import './App.css'
+import "./App.css";
+import LoginLayout from "./Pages/Login/LoginLayout";
+import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import RouterConfig from "./Routes/RouterConfig";
 
 function App() {
-
-  return <h1>Mobile Shop Management System</h1>;
-
+  return (
+    <BrowserRouter>
+        <RouterConfig />
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

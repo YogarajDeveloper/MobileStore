@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #0A3539;
+    --color-secondary: #F3F7F6;
+    --color-lightGreen: #255153;
+}
+
+@utility bg-thamizhan-gradientTop {
+    background-image: linear-gradient(
+        to left,
+        #d9afd9 0%,
+        #97d9e1 100%
+    );
+    
+}
+
+@utility bg-thamizhan-gradientRight {
+    background-image: linear-gradient(
+        to right,
+        #d9afd9 0%,
+        #97d9e1 100%
+    );
+    
+}

@@ -1,20 +1,20 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Register from './Register';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const LoginLayout = () => {
 
   const navigate = useNavigate();
 
   return (
-    <div className='flex'>
-      <div>LG Page</div> <br />
-
-      <button onClick={() => navigate('/register')}>
-        Register
-      </button>
-      <h3>Already acc is there pls login</h3>
-      <button onClick={()=>navigate('/login')}>Login</button>
+    <div className='min-h-screen w-full flex'>
+      <div className="w-[50%] flex justify-center items-center bg-thamizhan-gradientTop">
+        <span className="text-[21px] font-bold text-black">
+          Welcome to Thamizhan Mobiles
+        </span>
+      </div>
+      <div className='w-[50%] bg-thamizhan-gradientRight flex justify-center items-center'>
+        <Outlet />
+      </div>
     </div>
   );
 }

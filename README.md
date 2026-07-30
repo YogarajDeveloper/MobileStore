@@ -5,17 +5,16 @@ A full-stack e-commerce application for buying and selling mobile devices.
 ## 🎯 Project Overview
 
 **MobileStore** is a modern e-commerce platform where users can:
-- Browse mobile products
-- Add items to cart
-- Place orders
-- Track order status
+- Dashboard 
+- Mobiles Crud
+- User Crud
 - Manage user profile
 
 ## 🏗️ Tech Stack
 
 ### Backend
-- **Spring Boot** 2.7.x
-- **Java** 11+
+- **Spring Boot** 3.3.x
+- **Java** 17+
 - **MySQL** / PostgreSQL
 - **Maven**
 - **JWT** Authentication
@@ -40,9 +39,9 @@ MobileStore/
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Java 11+
+- Java 17+
 - Node.js 14+
-- MySQL 5.7+
+- PG admin 4
 - Git
 
 ### Backend Setup

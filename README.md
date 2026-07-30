@@ -1,4 +1,4 @@
-Yogaraj S
+## Mobile shop
 
 A Full Stack Web Application built using **Spring Boot (Backend)** and **React (Frontend)** for managing mobile shop operations like products, customers, and billing.
 

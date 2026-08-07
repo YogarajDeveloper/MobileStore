@@ -12,7 +12,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 
 export const SideMenu = () => {
 
-  const navigate =useNavigate()
+  const navigate = useNavigate()
   const menuItems = [
     {
       name: 'Dashboard',
@@ -25,18 +25,8 @@ export const SideMenu = () => {
       icon: Package,
     },
     {
-      name: 'Stock In',
-      path: '/stock-in',
-      icon: ArrowDownToLine,
-    },
-    {
-      name: 'Stock Out',
-      path: '/stock-out',
-      icon: ArrowUpFromLine,
-    },
-    {
-      name: 'Customers',
-      path: '/customers',
+      name: 'Users',
+      path: '/users',
       icon: Users,
     },
     {
@@ -48,24 +38,17 @@ export const SideMenu = () => {
 
   return (
     <>
-      <div className='h-22 border-lightGreen border-b flex items-center justify-center gap-2 hover:cursor-pointer' onClick={()=> navigate("/dashboard")}>
-        <Smartphone size={28} color='#F3F7F6' />
-        <span className="text-xl font-bold text-secondary">TM</span>
-      </div>
-
-      <div className="flex flex-col gap-2 text-secondary p-6">
+      <div className="flex flex-col gap-2 p-5">
+        <span className='tracking-wider font-semibold text-slate-400 text-[11px]'>MAIN MENU</span>
+        
         {menuItems.map((item) => {
           const Icon = item.icon;
-
           return (
             <NavLink
               key={item.path}
               to={item.path}
-              className={({ isActive }) =>
-                `flex items-center gap-4 rounded-xl p-3 transition-all ${isActive
-                  ? "bg-secondary text-primary"
-                  : "hover:bg-lightGreen"
-                }`
+              className={({ isActive }) =>`flex items-center gap-4 rounded-xl p-4 transition-all 
+                ${isActive ? "bg-loginBg text-white" : "hover:bg-secondary"}`
               }
             >
               <Icon size={20} />

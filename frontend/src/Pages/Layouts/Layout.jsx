@@ -1,18 +1,50 @@
 import React from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { SideMenu } from './SideMenu'
-import { Outlet } from 'react-router-dom'
+import { Smartphone ,LogOut} from 'lucide-react'
 
-export const Layout = () => {
+const Layout = () => {
+
+  const navigate = useNavigate();
   return (
-    <div className='min-h-screen flex bg-primary'>
+    <div className='min-h-screen w-full flex flex-col bg-secondary'>
+      {/* header */}
+      <div className='h-20 flex items-center justify-between gap-3 p-5 border border-r-0 border-b-fuchsia-100' 
+      onClick={(e) => {
+        e.preventDefault();
+        navigate("/dashboard")
+      }}>
+        <div className='flex items-center gap-2 cursor-pointer'>
+          <div className="h-10 w-10 rounded-2xl flex items-center justify-center shadow-sm text-secondary bg-loginBg" >
+            <Smartphone className="w-5 h-5" />
+          </div>
+          <span className="text-xl font-bold">MobilePro</span>
+        </div>
+
+        <div className='flex items-center gap-2 cursor-pointer' 
+        onClick={(e) => {
+          e.preventDefault();
+          sessionStorage.removeItem("auth");
+          navigate("/");
+        }}>
+          
+          <span>
+            <LogOut size={27} /></span>
+            <p >Logout</p>
+        </div>
+      </div>
       {/* sidemenu */}
-        <div className='bg-primary w-[14%]'>
+      <div className='flex h-[calc(100vh-80px)]'>
+        <div className='border-r border-r-fuchsia-100 w-[14%]'>
           <SideMenu />
         </div>
-        {/* main */}
-        <div className='bg-secondary flex-1'>
+        <div className='flex-1 bg-white h-full overflow-y-auto'>
           <Outlet />
         </div>
-    </div>
-  )
+
+      </div>
+
+    </div>)
 }
+
+export default Layout

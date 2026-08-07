@@ -1,25 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary: #0A3539;
-    --color-secondary: #F3F7F6;
-    --color-lightGreen: #255153;
-}
+  /* Colors */
+  --color-primary: #0A3539;
+  /* --color-loginBg: #0f172a; */
+  --color-loginBg: #1e1b4b;
 
-@utility bg-thamizhan-gradientTop {
-    background-image: linear-gradient(
-        to left,
-        #d9afd9 0%,
-        #97d9e1 100%
-    );
-    
-}
+  --color-secondary: #F3F7F6;
+  --color-accent: #255153;
+  --color-headline:#0C447C;
 
-@utility bg-thamizhan-gradientRight {
-    background-image: linear-gradient(
-        to right,
-        #d9afd9 0%,
-        #97d9e1 100%
-    );
-    
+  /*  Custom BreakPoints  */
+
+  --breakpoint-xs: 0px;  /* Extra small phones */
+  --breakpoint-xsm: 360px;   /* Small phones */
+  --breakpoint-xsl: 425px;  /* Extra-large phones (414 / 425) */
+  --breakpoint-xsxl: 520px;   /* Large phones / phablets (480–520) */
+  --breakpoint-tab-md: 640px;   /* Large phones / small tablets */
+  --breakpoint-tab-m: 769px;   /* Tablets (iPad Mini, normal tablets) */
+  --breakpoint-desk-lg: 1024px;  /* Small laptops */
+  --breakpoint-desk-xl: 1280px; /* Standard laptops */
+  --breakpoint-desk-2xl: 1440px; /* Wide laptops (MacBook Pro) */
+  --breakpoint-desk-3xl: 1536px; /* Small desktops */
+  --breakpoint-desk-4xl: 1675px; /* Medium desktops */
+  --breakpoint-desk-5xl: 1800px; /* Large desktop screens */
+
+  
+  /* Font */
+  --font-sans: "Plus Jakarta Sans", "Inter", sans-serif;
+
+  /* Shadow */
+  --shadow-auth:
+    0 20px 25px -5px rgb(0 0 0 / 0.05),
+    0 8px 10px -6px rgb(0 0 0 / 0.01);
 }

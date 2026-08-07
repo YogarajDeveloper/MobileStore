@@ -27,31 +27,45 @@ const Register = () => {
     }
   };
 
-  const handleOnchange=(data)=>{
-    setFormdata((prev)=>({
+  const handleOnchange = (data) => {
+    setFormdata((prev) => ({
       ...prev,
-      [data.target.name ]:data?.target?.value  
+      [data.target.name]: data?.target?.value
     }))
   }
 
   return (
-    <form onSubmit={handleSubmit}><br />
-      <label htmlFor="name">Username:</label>
-      <input name="name" value={formdata?.name}  onChange={(e)=>handleOnchange(e)} type="text"  /> <br /><br />
+    <form onSubmit={handleSubmit} className="flex rounded-[30px] bg-white items-center justify-center p-8">
 
-      <label htmlFor="email">Email:</label>
-      <input name="email" value={formdata?.email} onChange={(e)=>handleOnchange(e)} type="email" id="email" /> <br /><br />
+      <div className="w-[65%] flex flex-col gap-3">
+        <div className="flex flex-col">
+          <label htmlFor="name">Username</label>
+          <input name="name" value={formdata?.name} onChange={(e) => handleOnchange(e)} type="text" className="border rounded-lg p-3 outline-none" />
+        </div>
 
-      <label htmlFor="password">Password:</label>
-      <input name="password" value={formdata?.password} onChange={(e)=>handleOnchange(e)} type="password" id="password" /> <br /><br />
+        <div className="flex flex-col">
+          <label htmlFor="email">Email</label>
+          <input name="email" value={formdata?.email} onChange={(e) => handleOnchange(e)} type="email" id="email" className="border rounded-lg p-3 outline-none" />
+        </div>
 
-      <label htmlFor="confirmPassword">Confirm Password:</label>
-      <input name="confirmPassword" value={formdata?.confirmPassword} onChange={(e)=>handleOnchange(e)} type="password" id="confirmPassword" /><br /><br />
+        <div className="flex flex-col">
+          <label htmlFor="password">Password</label>
+          <input name="password" value={formdata?.password} onChange={(e) => handleOnchange(e)} type="password" id="password" className="border rounded-lg p-3 outline-none" />
+        </div>
 
-      <label htmlFor="phone">Phone:</label>
-      <input name="phone" value={formdata?.phone} onChange={(e)=>handleOnchange(e)} type="tel" id="phone" /><br /><br />
+        <div className="flex flex-col">
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input name="confirmPassword" value={formdata?.confirmPassword} onChange={(e) => handleOnchange(e)} type="password" id="confirmPassword" className="border rounded-lg p-3 outline-none" />
+        </div>
 
-      <button type="submit">Submit</button>
+        <div className="flex flex-col">
+          <label htmlFor="phone">Phone</label>
+          <input name="phone" value={formdata?.phone} onChange={(e) => handleOnchange(e)} type="tel" id="phone" className="border rounded-lg p-3 outline-none" />
+        </div>
+        <div>
+          <button className=" w-[65%] rounded-xl py-3 text-white font-semibold hover:opacity-80 bg-blue-300 w-full" type="submit">Submit</button>
+        </div>
+      </div>
     </form>
   );
 };

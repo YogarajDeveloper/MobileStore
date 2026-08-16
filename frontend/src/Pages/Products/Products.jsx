@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { api } from '../../customHooks/api';
 import Pagination from '../../CommonComponents/Pagination'
@@ -12,9 +12,6 @@ import DataTable from '../../CommonComponents/DataTable';
 
 const Products = () => {
 
-  const token = useSelector((state) => state.user.token);
-
-  const [productData, setProductData] = useState([]);
   const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
   const [paginationData, setPaginationData] = useState({
     pageIndex: 0,
@@ -52,9 +49,9 @@ const Products = () => {
       header: "PRICE",
       accessorKey: "price",
 
-    }, {
-      id: "actions",
-      header: "Actions",
+    },
+    {
+      header: "ACTIONS",
       enableColumnFilter: false,
       cell: ({ row }) => (""
         // <button onClick={() => console.log(row.original)}>View</button>
@@ -83,13 +80,13 @@ const Products = () => {
       return response.data;
     } catch (error) {
       console.log("Error:", error.response || error);
-      throw error; // Important
+      throw error;
     }
   };
 
   const { data, error, isError, isLoading, isSuccess, } = useQuery({ queryKey: ["products"], queryFn: getProducts });
 
-  const { mutate:addProductMutate, isPending } = useMutation({
+  const { mutate: addProductMutate, isPending } = useMutation({
     mutationFn: addProduct,
     onSuccess: (data) => {
       setIsAddProductModalOpen(false);
@@ -134,11 +131,11 @@ const Products = () => {
       {
         (
           <Modal
-            isOpen={isAddProductModalOpen}
-            onClose={() => setIsAddProductModalOpen(false)}
             title="Add Product"
             actionButton="Add Product"
+            isOpen={isAddProductModalOpen}
             onAction={() => formSubmit(formdata)}
+            onClose={() => setIsAddProductModalOpen(false)}
           >
             <ProductForm formdata={formdata} setFormdata={setFormdata} />
           </Modal>

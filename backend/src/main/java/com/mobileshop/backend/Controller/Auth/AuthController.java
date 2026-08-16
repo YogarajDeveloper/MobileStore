@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mobileshop.backend.DTO.Login.GoogleLoginRequest;
 import com.mobileshop.backend.DTO.Login.LoginRequest;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173") // Ungal Frontend URL
 public class AuthController {
 
     @Autowired
@@ -23,5 +24,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/google-login")
+    public ResponseEntity<?> googleLogin(@RequestBody GoogleLoginRequest request){
+        return ResponseEntity.ok(authService.googleLogin(request.getToken()));
     }
 }

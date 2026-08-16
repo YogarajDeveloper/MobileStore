@@ -29,11 +29,12 @@ public class SecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
+            .cors(cors -> {})
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/store", "/api/auth/login").permitAll()
-                .anyRequest().authenticated())
-                .addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class
-        );
+                .requestMatchers("/api/users/store", "/api/auth/login","/api/auth/google-login").permitAll()
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

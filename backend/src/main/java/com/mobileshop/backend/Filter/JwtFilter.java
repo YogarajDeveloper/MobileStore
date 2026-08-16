@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.mobileshop.backend.Service.Auth.JwtService;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,31 +26,72 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Override
-    protected void doFilterInternal( HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain)
+            throws ServletException, IOException {
 
-        System.out.println("JWT FILTER RUNNING");
         String header = request.getHeader("Authorization");
-        System.out.println("TOKEN HEADER : " + header);
 
-        if(header != null && header.startsWith("Bearer ")) {
+        try {
 
-            String token = header.substring(7);
+            if (header != null && header.startsWith("Bearer ")) {
 
-            String username = jwtService.extractUsername(token);
+                String token = header.substring(7);
 
-            if(username != null) {
+                String username = jwtService.extractUsername(token);
 
-                UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(
-                        username,
-                        null,
-                        new ArrayList<>()
-                    );
+                if (username != null &&
+                        SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                SecurityContextHolder.getContext()
-                    .setAuthentication(authToken);
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    username,
+                                    null,
+                                    new ArrayList<>());
+
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+
+            filterChain.doFilter(request, response);
+
+        } catch (ExpiredJwtException e) {
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+            response.getWriter().write(""" 
+                {
+                    "status":401,
+                    "message":"JWT Token Expired"
+                } """
+            );
+
+        } catch (JwtException e) {
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+            response.getWriter().write("""
+                { 
+                    "status":401, 
+                    "message":"Invalid JWT Token"
+                }
+            """);
+
+        } catch (Exception e) {
+
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+            response.getWriter().write("""
+                {
+                    "status":500,
+                    "message":"Internal Server Error"
+                }
+            """);
         }
-        filterChain.doFilter(request, response);
     }
 }

@@ -39,5 +39,9 @@ public class ProductService {
         return repository.findByBrand(brand);
     }
 
+    public void deleteProduct(Long id) {
+        repository.deleteById(id);       
+    }
+
     
 }

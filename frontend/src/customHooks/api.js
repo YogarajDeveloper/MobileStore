@@ -9,13 +9,21 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
+    const auth = sessionStorage.getItem("auth");
 
-    const auth = sessionStorage.getItem("auth");    
-    const token = JSON.parse(auth).token;
+    if (auth) {
+      try {
+        const { token } = JSON.parse(auth);
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      } catch (error) {
+        console.error("Invalid auth data in sessionStorage");
+        sessionStorage.removeItem("auth");
+      }
     }
+
     return config;
   },
   (error) => Promise.reject(error)

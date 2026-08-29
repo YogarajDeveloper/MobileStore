@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { Edit, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -149,6 +150,11 @@ const Products = () => {
     mutationFn: addProduct,
     onSuccess: (data) => {
       setIsAddProductModalOpen(false);
+      queryClient.invalidateQueries({
+        queryKey: ["products"]
+      });
+      setUserId("");
+
     },
     onError: (error) => {
       console.log("Error adding product:", error?.response);

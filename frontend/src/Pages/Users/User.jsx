@@ -14,7 +14,7 @@ const User = () => {
     const [isFormModel, setIsFormModel] = useState(false);
     const [paginationData, setPaginationData] = useState({
         pageIndex: 0,
-        pageSize: 30,
+        pageSize: 20,
         totalPages: 0,
         total: 0,
     });
@@ -170,6 +170,7 @@ const User = () => {
             console.log("Delete error:", error?.response || error);
         }
     });
+    
     const { data, error, isError, isLoading, isSuccess, } = useQuery({ queryKey: ["user"], queryFn: getUsers });
 
     return (

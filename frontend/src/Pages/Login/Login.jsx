@@ -35,11 +35,11 @@ const Login = () => {
     try {
       const payload = authMode ? { email: formdata.email, password: formdata.password}  : formdata;
       const endpoint = authMode ? "/auth/login" : "/auth/register";
-
+      
       const response = await api.post(endpoint, payload);
-
+      
       if (response.data?.token) {
-        sessionStorage.setItem( "auth",JSON.stringify({ token: response.data.token }));
+        sessionStorage.setItem( "auth",JSON.stringify({ token: response?.data?.token }));
         dispatch(setUser({ token: response.data.token }));
         navigate("/dashboard");
       }

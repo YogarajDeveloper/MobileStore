@@ -12,10 +12,11 @@ import DataTable from '../../CommonComponents/DataTable';
 
 const Products = () => {
 
+  const [userId, setUserId] = useState("");
   const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
   const [paginationData, setPaginationData] = useState({
     pageIndex: 0,
-    pageSize: 30,
+    pageSize: 20,
     totalPages: 0,
     total: 0,
   });
@@ -27,6 +28,29 @@ const Products = () => {
     rom: "",
     price: ""
   });
+
+  const handleEdit = (data) => {
+    setIsAddProductModalOpen(true);
+    setFormdata((prev) => ({
+      ...prev,
+      brand: data?.brand,
+      model: data?.model,
+      ram: data?.ram,
+      rom: data?.rom,
+      price: data?.price
+    }))
+    setUserId(data?.id)
+  }
+
+  const handleDelete = (data) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete ${data.brand}?`
+    );
+
+    if (confirmDelete) {
+      deleteProductMutate(data.id);
+    }
+  };
 
   const col = [
     {
@@ -52,9 +76,25 @@ const Products = () => {
     },
     {
       header: "ACTIONS",
-      enableColumnFilter: false,
-      cell: ({ row }) => (""
-        // <button onClick={() => console.log(row.original)}>View</button>
+      // enableColumnFilter: false,
+      cell: ({ row }) => (
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => handleEdit(row.original)}
+            className="text-blue-600 hover:text-blue-800 cursor-pointer h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center"
+          >
+            <Edit size={18} />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleDelete(row.original)}
+            className="text-red-600 hover:text-red-800 cursor-pointer h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center"
+          >
+            <Trash size={18} />
+          </button>
+        </div>
       ),
     },
   ]
@@ -83,6 +123,25 @@ const Products = () => {
       throw error;
     }
   };
+
+  const deleteProduct = async (id) => {
+    const response = await api.delete(`/product/delete/${id}`);
+    return response.data;
+  };
+
+  const { mutate: deleteProductMutate, isPending: isDeleting } = useMutation({
+    mutationFn: deleteProduct,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"]
+      });
+    },
+
+    onError: (error) => {
+      console.log("Delete error:", error?.response || error);
+    }
+  });
 
   const { data, error, isError, isLoading, isSuccess, } = useQuery({ queryKey: ["products"], queryFn: getProducts });
 

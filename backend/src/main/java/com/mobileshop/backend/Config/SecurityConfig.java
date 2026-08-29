@@ -45,6 +45,7 @@ public class SecurityConfig {
         return source;
     }
     
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -53,8 +54,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/users/store", "/api/auth/login","/api/auth/google-login").permitAll()
-                .anyRequest().authenticated()
-            )
+                .anyRequest().authenticated())
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

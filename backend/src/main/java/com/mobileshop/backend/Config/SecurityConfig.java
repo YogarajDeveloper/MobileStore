@@ -60,7 +60,7 @@ public class SecurityConfig {
                 .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
 
                 // Public APIs
-                .requestMatchers("/", "/error", "/users/store", "/auth/login", "/auth/google-login" ).permitAll()
+                .requestMatchers("/", "/error", "/api/users/store", "/api/auth/login", "/api/auth/google-login", "/api/auth/register").permitAll()
 
                 // Everything else requires JWT
                 .anyRequest().authenticated()

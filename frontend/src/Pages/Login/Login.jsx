@@ -17,8 +17,8 @@ const Login = () => {
   const [formdata, setFormdata] = useState({
     email: "",
     password: "",
-    fullName: "",
-    mobileNumber: "",
+    name: "",
+    phone: "",
     confirmPassword: "",
   });
 
@@ -45,6 +45,7 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error.response?.data || error.message);
+      alert(error.response?.data?.message || error.message || "Authentication failed");
     }
   };
 
@@ -131,7 +132,9 @@ const Login = () => {
           <div>
             <TextInput
               label="Full Name"
-              name="fullName"
+              name="name"
+              value={formdata.name}
+              onChange={handleOnchange}
               placeholder="Enter Your Full Name"
             />
           </div>
@@ -160,6 +163,9 @@ const Login = () => {
             <TextInput
               isPassword={true}
               label="Confirm Password"
+              name="confirmPassword"
+              value={formdata.confirmPassword}
+              onChange={handleOnchange}
               placeholder="Enter Your Confirm Password"
             />
           </div>
@@ -168,6 +174,9 @@ const Login = () => {
           <div>
             <TextInput
               label="Mobile Number"
+              name="phone"
+              value={formdata.phone}
+              onChange={handleOnchange}
               placeholder="Enter Your Mobile Number"
             />
           </div>

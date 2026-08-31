@@ -20,7 +20,7 @@ const Register = () => {
         "/users/store",
         formdata,
       );
-      navigate("/login")
+      navigate("/")
 
     } catch (error) {
       alert(error.response?.data?.message || error.message || error);

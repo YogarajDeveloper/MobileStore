@@ -24,7 +24,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     
-    @PostMapping("/store")
+    @PostMapping("/register")
     public  ResponseEntity<?> storeUser(@RequestBody User user) {
         userService.storeUser(user);
         return ResponseEntity.ok("User stored successfully!");

@@ -33,15 +33,20 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const payload = authMode ? { email: formdata.email, password: formdata.password}  : formdata;
-      const endpoint = authMode ? "/auth/login" : "/auth/register";
+      const payload = authMode ? { email: formdata.email, password: formdata.password } : formdata;
+      const endpoint = authMode ? "/auth/login" : "/users/register";
       
       const response = await api.post(endpoint, payload);
       
-      if (response.data?.token) {
-        sessionStorage.setItem( "auth",JSON.stringify({ token: response?.data?.token }));
-        dispatch(setUser({ token: response.data.token }));
-        navigate("/dashboard");
+      if (authMode) {
+        if (response.data?.token) {
+          sessionStorage.setItem( "auth",JSON.stringify({ token: response?.data?.token }));
+          dispatch(setUser({ token: response.data.token }));
+          navigate("/dashboard");
+        }
+      } else {
+        alert("Registration successful! Please sign in.");
+        setAuthMode(true);
       }
     } catch (error) {
       console.log(error.response?.data || error.message);

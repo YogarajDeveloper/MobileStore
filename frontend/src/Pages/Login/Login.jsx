@@ -93,20 +93,21 @@ const Login = () => {
 
           
             try {
-              const response = await axios.post(
-                "http://localhost:8080/api/auth/google-login",
+              const response = await api.post(
+                "/auth/google-login",
                 {
                   token: credentialResponse.credential
                 }
               );
 
               if (response.data?.token) {
+                sessionStorage.setItem("auth", JSON.stringify({ token: response.data.token }));
                 dispatch(setUser({ token: response.data.token }));
                 navigate("/dashboard");
               }
             } catch (error) {
               console.error(error);
-              alert("Google login failed: " + error.message);
+              alert("Google login failed: " + (error.response?.data?.message || error.message));
             }
           }}
           onError={() => alert("Google login failed")}

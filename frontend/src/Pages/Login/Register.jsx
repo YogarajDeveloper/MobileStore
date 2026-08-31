@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../customHooks/api";
 
 const Register = () => {
 
@@ -16,14 +16,14 @@ const Register = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const response = await axios.post(
-        "http://localhost:8080/api/users/store",
+      const response = await api.post(
+        "/users/store",
         formdata,
       );
       navigate("/login")
 
     } catch (error) {
-      alert(error);
+      alert(error.response?.data?.message || error.message || error);
     }
   };
 

@@ -17,7 +17,7 @@ const Register = () => {
     try {
       e.preventDefault();
       const response = await api.post(
-        "/users/store",
+        "/users/register",
         formdata,
       );
       navigate("/")

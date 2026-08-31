@@ -47,13 +47,27 @@ public class SecurityConfig {
     
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { http .csrf(csrf -> csrf.disable()) .cors(cors -> cors.configurationSource(corsConfigurationSource())) .authorizeHttpRequests(auth -> auth 
-        // Render / browser health check 
-        .requestMatchers("/", "/error").permitAll()
-         // Public APIs 
-        .requestMatchers( "/api/users/store", "/api/auth/login", "/api/auth/google-login" ).permitAll()
-         // Everything else requires JWT 
-         .anyRequest().authenticated() ) .addFilterBefore( jwtFilter, UsernamePasswordAuthenticationFilter.class ); 
-        return http.build(); 
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http
+            .csrf(csrf -> csrf.disable())
+
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+            .authorizeHttpRequests(auth -> auth
+
+                // CORS preflight
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+
+                // Public APIs
+                .requestMatchers("/", "/error", "/users/store", "/auth/login", "/auth/google-login" ).permitAll()
+
+                // Everything else requires JWT
+                .anyRequest().authenticated()
+            )
+
+            .addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 }

@@ -25,7 +25,7 @@ const RouterConfig = () => {
         <Route path="/users" element={<User />} />
         <Route path="/stock-in" element={<StockIn />} />
         <Route path="/stock-out" element={<StockOut />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/ai" element={<Settings />} />
       </Route>
     </Routes>
   );

@@ -25,6 +25,9 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public void storeUser(User user) {
+        if (user.getEmail() != null && userRepository.findByEmail(user.getEmail().trim()).isPresent()) {
+            throw new IllegalArgumentException("This email is already registered. Please sign in instead.");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword())); // encode to save more secure
         userRepository.save(user);
     }

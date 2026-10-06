@@ -16,6 +16,7 @@ import lombok.Setter;
 @Table(name = "users")
 @Getter
 @Setter
+@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 
     @Id
@@ -34,6 +35,9 @@ public class User {
     @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
-    @jakarta.validation.constraints.Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
+    @jakarta.validation.constraints.Pattern(
+        regexp = "^(\\+?\\d{1,3}[- ]?)?0?\\d{10}$",
+        message = "Phone number must be a valid 10-digit number"
+    )
     private String phone;
 }

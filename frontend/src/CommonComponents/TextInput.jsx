@@ -29,7 +29,7 @@ const TextInput = ({
     return (
         <div className="w-full space-y-1.5">
             <label
-                className="block text-xs font-semibold text-slate-300 tracking-wide select-none"
+                className="block text-xs font-semibold text-black tracking-wide select-none"
             >
                 {label}
             </label>
@@ -47,7 +47,7 @@ const TextInput = ({
                     value={value}
                     onChange={handleChange}
                     type={isPassword ? (showPassword ? 'text' : 'password') : type}
-                    className={`w-full py-3 px-4 text-sm font-medium rounded-xl transition-all duration-200 bg-loginBg border text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed
+                    className={`w-full py-3 px-4 text-sm font-medium rounded-xl transition-all duration-200 bg-white border text-black placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed
                     ${icon ? 'pl-11' : 'pl-4'} ${isPassword ? 'pr-11' : 'pr-4'} ${error ? 'border-red-500/80 focus:border-red-500 focus:ring-red-500/30' : 'border-slate-700/80 hover:border-slate-600'} ${className}`}
                 />
 

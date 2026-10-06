@@ -25,7 +25,7 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
 
-    @Value("${frontend.url}")
+    @Value("${frontend.url:http://localhost:5173}")
     private String frontEndUrl;
 
     @Bean
@@ -36,10 +36,28 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(frontEndUrl));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        List<String> allowedOrigins = new java.util.ArrayList<>();
+        if (frontEndUrl != null && !frontEndUrl.isBlank()) {
+            for (String origin : frontEndUrl.split(",")) {
+                String trimmed = origin.trim();
+                if (!trimmed.isEmpty()) {
+                    allowedOrigins.add(trimmed);
+                }
+            }
+        }
+
+        // Allow localhost and 127.0.0.1 on any port for local development
+        allowedOrigins.add("http://localhost:*");
+        allowedOrigins.add("http://127.0.0.1:*");
+
+        configuration.setAllowedOriginPatterns(allowedOrigins);
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"));
         configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -47,13 +65,27 @@ public class SecurityConfig {
     
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { http .csrf(csrf -> csrf.disable()) .cors(cors -> cors.configurationSource(corsConfigurationSource())) .authorizeHttpRequests(auth -> auth 
-        // Render / browser health check 
-        .requestMatchers("/", "/error").permitAll()
-         // Public APIs 
-        .requestMatchers( "/api/users/store", "/api/auth/login", "/api/auth/google-login" ).permitAll()
-         // Everything else requires JWT 
-         .anyRequest().authenticated() ) .addFilterBefore( jwtFilter, UsernamePasswordAuthenticationFilter.class ); 
-        return http.build(); 
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http
+            .csrf(csrf -> csrf.disable())
+
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+            .authorizeHttpRequests(auth -> auth
+
+                // CORS preflight
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+
+                // Public APIs
+                .requestMatchers("/", "/error", "/api/users/register", "/api/auth/login", "/api/auth/google-login").permitAll()
+
+                // Everything else requires JWT
+                .anyRequest().authenticated()
+            )
+
+            .addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 }

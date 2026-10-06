@@ -17,8 +17,8 @@ const Login = () => {
   const [formdata, setFormdata] = useState({
     email: "",
     password: "",
-    fullName: "",
-    mobileNumber: "",
+    name: "",
+    phone: "",
     confirmPassword: "",
   });
 
@@ -32,43 +32,79 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!authMode) {
+      if (!formdata.name?.trim()) {
+        alert("Please enter your name");
+        return;
+      }
+      if (!formdata.email?.trim()) {
+        alert("Please enter your email");
+        return;
+      }
+      if (!formdata.password || formdata.password.length < 6) {
+        alert("Password must be at least 6 characters");
+        return;
+      }
+      if (formdata.password !== formdata.confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+      if (!formdata.phone?.trim()) {
+        alert("Please enter your mobile number");
+        return;
+      }
+    }
+
     try {
-      const payload = authMode ? { email: formdata.email, password: formdata.password}  : formdata;
-      const endpoint = authMode ? "/auth/login" : "/auth/register";
+      const payload = authMode
+        ? { email: formdata.email.trim(), password: formdata.password }
+        : {
+            name: formdata.name.trim(),
+            email: formdata.email.trim(),
+            password: formdata.password,
+            phone: formdata.phone.trim(),
+          };
+      const endpoint = authMode ? "/auth/login" : "/users/register";
       
       const response = await api.post(endpoint, payload);
       
-      if (response.data?.token) {
-        sessionStorage.setItem( "auth",JSON.stringify({ token: response?.data?.token }));
-        dispatch(setUser({ token: response.data.token }));
-        navigate("/dashboard");
+      if (authMode) {
+        if (response.data?.token) {
+          sessionStorage.setItem("auth", JSON.stringify({ token: response?.data?.token }));
+          dispatch(setUser({ token: response.data.token }));
+          navigate("/dashboard");
+        }
+      } else {
+        alert("Registration successful! Please sign in.");
+        setAuthMode(true);
       }
     } catch (error) {
       console.log(error.response?.data || error.message);
+      alert(error.response?.data?.message || error.message || "Authentication failed");
     }
   };
 
   return (
     <div className="flex flex-col w-full justify-between gap-6 p-6 rounded-xl">
       <div className="flex flex-col gap-1">
-        <h2 className="text-3xl font-extrabold tracking-tight text-white">
+        <h2 className="text-3xl font-extrabold tracking-tight text-black">
           {authMode ? "Welcome back" : "Create an Account"}
         </h2>
-        <p className="text-[15px] text-slate-400 mt-1 sm:w-[80%]">
+        <p className="text-[15px] text-black mt-1 sm:w-[80%]">
           {authMode
             ? "Access exclusive smartphone discounts"
             : "Register today to unlock benefits"}
         </p>
       </div>
 
-      <div className="grid grid-cols-2 p-1 bg-slate-800/80 rounded-xl border border-slate-700/60">
+      <div className="grid grid-cols-2 p-1 bg-white rounded-xl border border-slate-700/60">
         <button
           type="button"
           onClick={() => setAuthMode(true)}
           className={`py-2 text-xs font-bold rounded-lg transition-all ${
             authMode
               ? "bg-blue-600 text-white shadow-md"
-              : "text-slate-400 hover:text-white"
+              : "text-black"
           }`}
         >
           Sign In
@@ -79,14 +115,14 @@ const Login = () => {
           className={`py-2 text-xs font-bold rounded-lg transition-all ${
             !authMode
               ? "bg-blue-600 text-white shadow-md"
-              : "text-slate-400 hover:text-white"
+              : "text-black"
           }`}
         >
           Create Account
         </button>
       </div>
 
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center rounded-2xl">
         {/* ✓ Replace old button with GoogleLogin component */}
         <GoogleLogin
           onSuccess={async (credentialResponse) => {
@@ -113,14 +149,13 @@ const Login = () => {
           onError={() => alert("Google login failed")}
           theme="light"
           size="large"
-        />
-
-  
+        
+        /> 
       </div>
 
       <div className="relative flex items-center justify-center">
         <div className="border-t border-slate-700/80 w-full" />
-        <span className="px-3 text-xs uppercase tracking-wider text-slate-400 font-semibold bg-slate-900/40 rounded-md backdrop-blur-sm">
+        <span className="px-3 text-xs uppercase tracking-wider text-white font-semibold bg-black rounded-md backdrop-blur-sm">
           or
         </span>
         <div className="border-t border-slate-700/80 w-full" />
@@ -131,7 +166,9 @@ const Login = () => {
           <div>
             <TextInput
               label="Full Name"
-              name="fullName"
+              name="name"
+              value={formdata.name}
+              onChange={handleOnchange}
               placeholder="Enter Your Full Name"
             />
           </div>
@@ -160,6 +197,9 @@ const Login = () => {
             <TextInput
               isPassword={true}
               label="Confirm Password"
+              name="confirmPassword"
+              value={formdata.confirmPassword}
+              onChange={handleOnchange}
               placeholder="Enter Your Confirm Password"
             />
           </div>
@@ -168,6 +208,9 @@ const Login = () => {
           <div>
             <TextInput
               label="Mobile Number"
+              name="phone"
+              value={formdata.phone}
+              onChange={handleOnchange}
               placeholder="Enter Your Mobile Number"
             />
           </div>

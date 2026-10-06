@@ -5,16 +5,16 @@ A Full Stack Web Application built using **Spring Boot (Backend)** and **React (
 
 --------
 **Backend**
-- Java 21
+- Java 17
 - Spring Boot
 - Spring MVC
 - Spring Data JPA
-- MySQL
+- PGSQL
 - Maven
   
 **Frontend**
 - React (Vite)
-- HTML, CSS, JavaScript
+- HTML, Tailwind CSS, JavaScript
 - Axios
 
 --------
@@ -29,12 +29,11 @@ MobileStore/
 
 ## Features
 
-- Product Management (Add / Update / Delete)
-- Customer Management
-- Billing System
-- REST API integration
 - Responsive UI
+- REST API integration
 - Database integration (MySQL)
+- Product Management (Add / Update / Delete)
+- Customer Management (Add / Update / Delete)
 
 --------
 

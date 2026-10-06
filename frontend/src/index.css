@@ -5,11 +5,14 @@
   --color-primary: #0A3539;
   /* --color-loginBg: #0f172a; */
   --color-loginBg: #1e1b4b;
+  --color-loginWhite:#f8fafc;
 
   --color-secondary: #F3F7F6;
   --color-accent: #255153;
   --color-headline:#0C447C;
 
+  --background-image-custom-grad: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 40%, #2563eb 100%); 
+  
   /*  Custom BreakPoints  */
 
   --breakpoint-xs: 0px;  /* Extra small phones */

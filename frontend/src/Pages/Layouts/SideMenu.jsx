@@ -3,16 +3,12 @@ import {
   Users,
   Package,
   Settings,
-  Smartphone,
-  ArrowDownToLine,
   LayoutDashboard,
-  ArrowUpFromLine,
 } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 export const SideMenu = () => {
 
-  const navigate = useNavigate()
   const menuItems = [
     {
       name: 'Dashboard',
@@ -30,8 +26,8 @@ export const SideMenu = () => {
       icon: Users,
     },
     {
-      name: 'Settings',
-      path: '/settings',
+      name: 'AI',
+      path: '/ai',
       icon: Settings,
     },
   ]
@@ -45,14 +41,13 @@ export const SideMenu = () => {
           const Icon = item.icon;
           return (
             <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>`flex items-center gap-4 rounded-xl p-4 transition-all 
-                ${isActive ? "bg-loginBg text-white" : "hover:bg-secondary"}`
+              key={item?.path}
+              to={item?.path}
+              className={({ isActive }) =>`flex items-center gap-4 rounded-xl p-4 transition-all  ${isActive ? "bg-loginBg text-white" : "hover:bg-secondary"}`
               }
             >
               <Icon size={20} />
-              <span>{item.name}</span>
+              <span>{item?.name}</span>
             </NavLink>
           );
         })}

@@ -25,9 +25,9 @@ public class UserController {
     private UserService userService;
     
     @PostMapping("/register")
-    public  ResponseEntity<?> storeUser(@RequestBody User user) {
+    public ResponseEntity<?> storeUser(@jakarta.validation.Valid @RequestBody User user) {
         userService.storeUser(user);
-        return ResponseEntity.ok("User stored successfully!");
+        return ResponseEntity.ok(java.util.Map.of("message", "User registered successfully!"));
     }
 
     @PostMapping("/get-all")

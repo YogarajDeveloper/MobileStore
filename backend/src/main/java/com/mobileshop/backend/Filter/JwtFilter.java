@@ -32,14 +32,18 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
+        // Bypass CORS preflight requests
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String header = request.getHeader("Authorization");
 
-        try {
+        if (header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
 
-            if (header != null && header.startsWith("Bearer ")) {
-
-                String token = header.substring(7);
-
+            try {
                 String username = jwtService.extractUsername(token);
 
                 if (username != null &&
@@ -53,45 +57,29 @@ public class JwtFilter extends OncePerRequestFilter {
 
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
+            } catch (ExpiredJwtException e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.getWriter().write("""
+                    {
+                        "status": 401,
+                        "message": "JWT Token Expired"
+                    }
+                """);
+                return;
+            } catch (JwtException e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.getWriter().write("""
+                    {
+                        "status": 401,
+                        "message": "Invalid JWT Token"
+                    }
+                """);
+                return;
             }
-
-            filterChain.doFilter(request, response);
-
-        } catch (ExpiredJwtException e) {
-
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-            response.getWriter().write(""" 
-                {
-                    "status":401,
-                    "message":"JWT Token Expired"
-                } """
-            );
-
-        } catch (JwtException e) {
-
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-            response.getWriter().write("""
-                { 
-                    "status":401, 
-                    "message":"Invalid JWT Token"
-                }
-            """);
-
-        } catch (Exception e) {
-
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-            response.getWriter().write("""
-                {
-                    "status":500,
-                    "message":"Internal Server Error"
-                }
-            """);
         }
+
+        filterChain.doFilter(request, response);
     }
 }

@@ -7,14 +7,10 @@ const LoginLayout = () => {
 
   return (
     <div className='min-h-screen w-full flex'>
-      <div className="w-[50%] flex justify-center items-center bg-gradient-to-r from-login-bg-left to-login-bg-right">
-        <div className="font-bold w-[90%] h-full text-headline flex flex-col p-12 justify-around">
+      <div className="w-[50%] flex justify-center items-center bg-custom-grad">
+        <div className="font-bold w-[90%] h-full text-gray-50 flex flex-col p-12 justify-around">
           {/* logo */}
-          <section>
-            <div className=' rounded-2xl'>
-              Logo TM
-            </div>
-          </section>
+          
           {/* headelines */}
           <section className='flex flex-col'>
             <span className='text-[21px] '>
@@ -25,14 +21,11 @@ const LoginLayout = () => {
               faster with a single clean workspace
             </span>
           </section>
-          {/* dumy design */}
-          <section>
-            <pre>--*--   @copy   --*-- </pre>
-          </section>
+         
         </div>
 
       </div>
-      <div className='w-[50%] flex justify-center items-center bg-loginBg'>
+      <div className='w-[50%] flex justify-center items-center bg-loginWhite'>
         <div className='w-[55%]'>
           <Outlet />
         </div>

@@ -14,14 +14,37 @@ const Register = () => {
     phone: "",
   });
   const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-      const response = await api.post(
-        "/users/register",
-        formdata,
-      );
-      navigate("/")
+    e.preventDefault();
+    if (!formdata.name?.trim()) {
+      alert("Please enter username");
+      return;
+    }
+    if (!formdata.email?.trim()) {
+      alert("Please enter email");
+      return;
+    }
+    if (!formdata.password || formdata.password.length < 6) {
+      alert("Password must be at least 6 characters");
+      return;
+    }
+    if (formdata.password !== formdata.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+    if (!formdata.phone?.trim()) {
+      alert("Please enter phone number");
+      return;
+    }
 
+    try {
+      await api.post("/users/register", {
+        name: formdata.name.trim(),
+        email: formdata.email.trim(),
+        password: formdata.password,
+        phone: formdata.phone.trim(),
+      });
+      alert("Registration successful! Please sign in.");
+      navigate("/");
     } catch (error) {
       alert(error.response?.data?.message || error.message || error);
     }
